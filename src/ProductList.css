@@ -17,6 +17,38 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
 }
+.cart {
+  position: relative;     /* for positioning the badge */
+  display: inline-block;  /* shrink-wrap to the SVG */
+  margin: 0;
+  padding: 0;
+  line-height: 0;         /* remove extra h1 spacing */
+  width: 68px;            /* match your icon’s width */
+  height: 68px;           /* match your icon’s height */
+}
+.cart svg {
+  width: 100%;
+  height: 100%;
+  display: block;         /* remove inline-SVG whitespace */
+}
+.cart-badge {
+  position: absolute;
+  /* push it 8px down & 8px left from the top-right corner */
+  top: 22px;
+  right: 22px;
+
+  background: #e74c3c;
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
 
 /* Navbar */
 .navbar {
