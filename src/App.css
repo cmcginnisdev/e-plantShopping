@@ -3,12 +3,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden;
+
+}
+
+html, body {
+  overflow-x: hidden;
 }
 
 .landing-page {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background-color: #f8f8f8;
 }
@@ -29,7 +33,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
  top: 100px;
   backdrop-filter: blur(4px);
   background-color: rgba(0,0,0,0.5);
@@ -37,17 +41,16 @@
 }
 
 .landing_content {
- margin-top: 430px;
-  margin-left: 100px;
-  transform: translate(-50%, -50%);
+  /* completely replace the old positioning hacks: */
+  margin: 20px 0 0;    /* e.g. just push it down 20px if needed */
+  /* transform: none;  ← omit entirely */
   z-index: 1;
   text-align: center;
-  /* background-color: red; */
   width: 400px;
   height: 400px;
   display: flex;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: 10px;
 }

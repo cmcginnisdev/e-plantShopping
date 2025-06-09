@@ -4,6 +4,14 @@ body, h1, ul {
     padding: 0;
 }
 
+h1 {
+    font-size: 28px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-top: 10px;
+}
+
 /* Set a background color */
 body {
     font-family: Arial, sans-serif;
@@ -109,6 +117,12 @@ body {
 
 .product-button:hover {
     background-color: #c0392b;
+}
+
+.product-button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
 
 /* Pseudo-elements - Sale badge */

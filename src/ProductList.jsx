@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
 import { useDispatch } from 'react-redux';
-import { addItem } from './redux/cartSlice'; // Import the Redux action to add items to the cart
+import { addItem } from './CartSlice'; // Import the Redux action to add items to the cart
+
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
@@ -254,16 +255,29 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowCart(false);
     };
-    const [addedToCart, setAddedToCart] = useState({});
-    const handleAddToCart = (product) => {
-        dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
 
-        setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
-            ...prevState, // Spread the previous state to retain existing entries
-            [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
+    const [addedToCart, setAddedToCart] = useState({});
+
+    const handleAddToCart = (plant, categoryIndex, plantIndex) => {
+        const newItem = {
+            // make a unique id (or use a real id if your data has one)
+            id: `${categoryIndex}-${plantIndex}`,
+            name: plant.name,
+            image: plant.image,
+            description: plant.description,
+            // strip the dollar sign and convert to a number
+            cost: parseFloat(plant.cost.replace("$", "")),
+            // start quantity at 1
+            quantity: 1,
+        };
+        dispatch(addItem(newItem));
+
+        setAddedToCart(prev => ({
+            ...prev,
+            [newItem.id]: true,
         }));
         };
-
+    
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -286,21 +300,41 @@ function ProductList({ onHomeClick }) {
             </div>
             {!showCart ? (
                 <div className="product-grid">
-                    {plantsArray.map((category, index) => (
-                        <div key={index} className="product-category">
-                            <h2>{category.category}</h2>
-                            <div className="product-list">
-                                {category.plants.map((plant, plantIndex) => (
-                                    <div key={plantIndex} className="product-item">
-                                        <img src={plant.image} alt={plant.name} />
-                                        <h3>{plant.name}</h3>
-                                        <p>{plant.description}</p>
-                                        <p className="cost">{plant.cost}</p>
-                                        <button className="add-to-cart" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
-                                    </div>
-                                ))}
+                    {plantsArray.map((category, categoryIndex) => (
+                    <div key={categoryIndex}>
+                        <h1>{category.category}</h1>
+                        <div className="product-list">
+                        {category.plants.map((plant, plantIndex) => {
+                            // 1. build the same unique ID that handleAddToCart uses:
+                            const id = `${categoryIndex}-${plantIndex}`;
+
+                            // 2. check if it’s been added
+                            const isAdded = !!addedToCart[id];
+
+                            return (
+                            <div className="product-card" key={id}>
+                                <img
+                                className="product-image"
+                                src={plant.image}
+                                alt={plant.name}
+                                />
+                                <div className="product-title">{plant.name}</div>
+                                <div className="product-description">{plant.description}</div>
+                                <div className="product-cost">${plant.cost}</div>
+                                <button
+                                className="product-button"
+                                // 3. disable once added
+                                disabled={isAdded}
+                                onClick={() => handleAddToCart(plant, categoryIndex, plantIndex)}
+                                >
+                                {/* 4. swap label */}
+                                {isAdded ? 'Added to Cart' : 'Add to Cart'}
+                                </button>
                             </div>
+                            );
+                        })}
                         </div>
+                    </div>
                     ))}
                 </div>
             ) : (
